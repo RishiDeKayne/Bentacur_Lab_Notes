@@ -1,6 +1,6 @@
 #commands to calculate TE content of sequencing data
 
-#software required: repeatmasker/repeatmodeler, 
+#software required: RepeatModeler (I used .v2.0.1), RepeatMasker (I used v-4.1.0), 
 
 ################
 # 1. make repeat library
@@ -11,21 +11,29 @@
 #1.1 build repeat library form your assembly - this example command works for RepeatModeler.v2.0.1
 #for installing this see: https://www.repeatmasker.org/RepeatModeler/ 
 #this command makes a new database where you just need to specify a `-name` for the library and the path to `your_genome.fa`
+
 BuildDatabase -name your_genome_name_1 -engine ncbi /file/path/to/your_genome.fa
 
-/ceph/software/repeatmodeler/RepeatModeler.v2.0.1/RepeatModeler -database danaus_chrysippus_2.2 -pa 50 -LTRStruct
+#now you can query this to get the library. The following command will use RepeatScout and RECON and LTRStruct to find repeat categories
 
-#get other lepidoptera repeats
-perl /ceph/software/repeatmasker/RepeatMasker-4.1.0/util/queryRepeatDatabase.pl -species Lepidoptera | grep -v "Species:" > Lepidoptera.Repbase.repeatmasker
+RepeatModeler -database your_genome_name_1 -pa 50 -LTRStruct
+
+#here you can also get repeats from a species/clade you specify from existing databases - you can search for different species/clades
+#here I give an example with lepidoptera (butterflies) so you should change that to the broadest clade of your fish
+
+perl /path/to/repeatmasker/RepeatMasker-4.1.0/util/queryRepeatDatabase.pl -species Lepidoptera | grep -v "Species:" > Lepidoptera.Repbase.repeatmasker
+
+#count how many repeats you have
 grep ">" Lepidoptera.Repbase.repeatmasker  | wc -l
-#1253
 
-grep ">" danaus_chrysippus_2.2-families.fa | wc -l
-1653
+#count how many were in your own repeat library
+grep ">" your_genome_name_1-families.fa | wc -l
 
-#combine
-cat Lepidoptera.Repbase.repeatmasker danaus_chrysippus_2.2-families.fa > Lepidoptera_and_danaus_chrysippus2.2.repeatmasker
+
+#combine these to form one big library/database we will use moving forward
+cat Lepidoptera.Repbase.repeatmasker your_genome_name_1-families.fa > all.repeatmasker
 
 ################
 # 2. calculate repeat content in genomic data
 ################
+
