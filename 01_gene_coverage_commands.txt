@@ -1,0 +1,22 @@
+#commands to calculate coverage across genes
+
+#software required: bwa, samtools, mosdepth
+
+################
+# 1. Get sequences of genes of interest
+################
+# get genes in fasta format with the name in the header and then the sequence
+
+################
+# 2. map reads
+################
+# map raw reads from each individual to the fasta file with genes listed
+
+
+################
+# 3. Calculate coverage
+################
+# take the bam files that result from this mapping and run mosdepth on them which will give coverage of each gene for each individual
+# I would start with all together and scroll through the .html file you will get and then you can specify/extract data for each region separately
+
+
