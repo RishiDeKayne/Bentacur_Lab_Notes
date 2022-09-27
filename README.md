@@ -7,6 +7,8 @@
 3. Kmer distributions for each species
 
 Example figure:  
-[[/images/ExampleFig.pdf|test]]
+<img
+  src="/images/ExampleFig.pdf"
+  style="display: inline-block; margin: 0 auto; max-width: 300px">
 
 
