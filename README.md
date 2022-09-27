@@ -8,7 +8,7 @@
 
 Example figure:  
 <img
-  src="/images/ExampleFig.pdf"
+  src="/images/examplefig.png"
   style="display: inline-block; margin: 0 auto; max-width: 300px">
 
 
