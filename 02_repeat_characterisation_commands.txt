@@ -1,1 +1,31 @@
-#
+#commands to calculate TE content of sequencing data
+
+#software required: repeatmasker/repeatmodeler, 
+
+################
+# 1. make repeat library
+################
+#to get a repeat library we will use we will combine published/stored repeats from the clade with a de novo repeat library
+#this de novo repeat library will be from the one very good genome that you have
+
+#1.1 build repeat library form your assembly - this example command works for RepeatModeler.v2.0.1
+#for installing this see: https://www.repeatmasker.org/RepeatModeler/ 
+#this command makes a new database where you just need to specify a `-name` for the library and the path to `your_genome.fa`
+BuildDatabase -name your_genome_name_1 -engine ncbi /file/path/to/your_genome.fa
+
+/ceph/software/repeatmodeler/RepeatModeler.v2.0.1/RepeatModeler -database danaus_chrysippus_2.2 -pa 50 -LTRStruct
+
+#get other lepidoptera repeats
+perl /ceph/software/repeatmasker/RepeatMasker-4.1.0/util/queryRepeatDatabase.pl -species Lepidoptera | grep -v "Species:" > Lepidoptera.Repbase.repeatmasker
+grep ">" Lepidoptera.Repbase.repeatmasker  | wc -l
+#1253
+
+grep ">" danaus_chrysippus_2.2-families.fa | wc -l
+1653
+
+#combine
+cat Lepidoptera.Repbase.repeatmasker danaus_chrysippus_2.2-families.fa > Lepidoptera_and_danaus_chrysippus2.2.repeatmasker
+
+################
+# 2. calculate repeat content in genomic data
+################
