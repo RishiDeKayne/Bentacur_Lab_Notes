@@ -32,8 +32,34 @@ grep ">" your_genome_name_1-families.fa | wc -l
 
 #combine these to form one big library/database we will use moving forward
 cat Lepidoptera.Repbase.repeatmasker your_genome_name_1-families.fa > all.repeatmasker
+grep ">" all.repeatmasker | wc -l
+
 
 ################
-# 2. calculate repeat content in genomic data
+# 2. calculate repeat content in genomic data 
 ################
+#these next steps will get repeat content from a fasta file 
+#this first example will just extract this information from your good reference, I would see how long this takes and then see if you can do this for the whole raw reads file
+#if that were to take too long perhaps you can still run this for each proto-assembly that you have instead (it could be rough but better than nothing).
+
+#copy genome here:
+cp your_genome.fa .
+
+#do the repeat masking (which will output proportions for each family)
+/ceph/software/repeatmasker/RepeatMasker-4.1.0/RepeatMasker -e rmblast -pa 48 -s -lib all.repeatmasker -dir /file/path/to/our_output -xsmall -gff ./your_genome.fa
+
+#if you want to get repeat landscape to view expansion of gene families - and I would do this for your good reference only:
+/path/to/repeatmasker/RepeatMasker-4.1.0/RepeatMasker -e rmblast -pa 48 -s -a -xsmall -gccalc -lib all.repeatmasker ./your_genome.fa
+
+#now calculate the divergence from the .align output file from previous step
+#worth looking up what the -noCpGMod option does and seeing if you might need to add this to calculate the repeat landscape here
+/path/to/repeatmasker/RepeatMasker-4.1.0/util/calcDivergenceFromAlign.pl -s your_output.divsum Dchry2.2.fa.align
+
+#then plot - here you need to adjust the -g to be your genome length so the %s are calculated properly
+/path/to/repeatmasker/RepeatMasker-4.1.0/util/createRepeatLandscape.pl -div your_output.divsum -g 354020300 > your_output.html
+
+#then view the .html for your repeat landscape
+
+#if you write a script to mask each of your references you can then extract the information for each family/group of TEs from each individual with grep
+#let me know if you need help with this
 
