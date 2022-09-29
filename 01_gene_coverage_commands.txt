@@ -12,6 +12,17 @@
 ################
 # map raw reads from each individual to the fasta file with genes listed
 
+#first index genome if needed
+bwa index /file/path/to/your_genome.fa
+
+#and then do the mapping
+#single-end data
+bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1.fq.gz > /file/path/to/indiv1.sam
+
+# paired-end mapping, general command structure, adjust to your case
+bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1_read1.fq.gz /file/path/to/your_reads_indiv1_read2.fq.gz > /file/path/to/indiv1.sam
+
+#filter out secondary alignments
 
 ################
 # 3. Calculate coverage
