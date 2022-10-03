@@ -30,4 +30,31 @@ bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1_read1.fq.gz
 # take the bam files that result from this mapping and run mosdepth on them which will give coverage of each gene for each individual
 # I would start with all together and scroll through the .html file you will get and then you can specify/extract data for each region separately
 
+###assess bams with MOSDEPTH
+#/data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth
 
+ssh bigbang
+mkdir /scratch/rdekayne/mosdepth_danaus/
+cd /scratch/rdekayne/gatk
+
+ls *.bam > /scratch/rdekayne/mosdepth_danaus/bam_nofilepath.list
+
+touch mosdepth_run.txt
+cat /scratch/rdekayne/mosdepth_danaus/bam_nofilepath.list | while read bam
+do
+echo "mosdepth -n ${bam} /scratch/rdekayne/gatk/${bam} && touch /data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth/done_files/${bam}.done" >> mosdepth_run.txt
+done
+
+cp mosdepth_run.txt /data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth
+
+sconda genomics_general
+parallel -j 1 'qsub -cwd -N mosdepth -V -pe smp64 1 -l h=bigbang -b yes {}' :::: mosdepth_run.txt
+
+mkdir plot_dist
+cd plot_dist/
+
+python ../mosdepth/scripts/plot-dist.py ../*global.dist.txt
+
+scp qmaster:/data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth/plot_dist/dist.html .
+
+grep "total" ../realigned.SM18W01.UKDSW02200-C.220307.Dchry2.2.bwa.default.rmdup.bam.mosdepth.summary.txt
