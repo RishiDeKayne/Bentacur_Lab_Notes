@@ -1,6 +1,6 @@
 #commands to calculate coverage across genes
 
-#software required: bwa, samtools, mosdepth
+#software required: bwa, samtools, mosdepth (installation: https://github.com/brentp/mosdepth)
 
 ################
 # 1. Get sequences of genes of interest
