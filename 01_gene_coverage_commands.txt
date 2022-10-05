@@ -52,3 +52,6 @@ parallel -j 1 'qsub -cwd -N mosdepth -V -pe smp64 1 -l h=bigbang -b yes {}' ::::
 python ../mosdepth/scripts/plot-dist.py ../*global.dist.txt
 
 #this will make a .html file you can then view
+
+#there should now be lists of .summary* files which should have information about coverage across each scaffold/in our case gene - you can plot these
+#to start I would plot a box plot showing the coverage for each gene grouping individuals by ecomorph - you could also do a scatterplot and colour sister species with different ecomorphs, where we expect a transition, the same colour-code
