@@ -7,6 +7,8 @@
 ################
 # get genes in fasta format with the name in the header and then the sequence
 
+#if you have gene-specific sequences you can just cat them together
+
 ################
 # 2. map reads
 ################
@@ -31,30 +33,22 @@ bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1_read1.fq.gz
 # I would start with all together and scroll through the .html file you will get and then you can specify/extract data for each region separately
 
 ###assess bams with MOSDEPTH
-#/data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth
 
-ssh bigbang
-mkdir /scratch/rdekayne/mosdepth_danaus/
-cd /scratch/rdekayne/gatk
+#get a list of bam files
+ls *.bam > bam.list
 
-ls *.bam > /scratch/rdekayne/mosdepth_danaus/bam_nofilepath.list
-
+#now run code to get a single file with all mosdepth commands
 touch mosdepth_run.txt
-cat /scratch/rdekayne/mosdepth_danaus/bam_nofilepath.list | while read bam
+cat bam.list | while read bam
 do
-echo "mosdepth -n ${bam} /scratch/rdekayne/gatk/${bam} && touch /data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth/done_files/${bam}.done" >> mosdepth_run.txt
+echo "mosdepth -n ${bam} /path/to/your/${bam} && touch /path/to/working/directory/done_files/${bam}.done" >> mosdepth_run.txt
 done
 
-cp mosdepth_run.txt /data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth
-
-sconda genomics_general
+#use parallel to run this list of commands - you may need to change this command according to your HPC architecture
+#it is also possible to run some kind of batch script if you have a different kind of submission system
 parallel -j 1 'qsub -cwd -N mosdepth -V -pe smp64 1 -l h=bigbang -b yes {}' :::: mosdepth_run.txt
 
-mkdir plot_dist
-cd plot_dist/
-
+#now we want to run this mosdepth script whihc will output curves of coverage for each individual across each scaffold - in our case each gene
 python ../mosdepth/scripts/plot-dist.py ../*global.dist.txt
 
-scp qmaster:/data/martin/genomics/analyses/Danaus_mapping/Wild90_realigned/mosdepth/plot_dist/dist.html .
-
-grep "total" ../realigned.SM18W01.UKDSW02200-C.220307.Dchry2.2.bwa.default.rmdup.bam.mosdepth.summary.txt
+#this will make a .html file you can then view
