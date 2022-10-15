@@ -1,6 +1,6 @@
 # Bentacur_Lab_Notes
 
-1. Gene depth coverage/CNV
+1. Gene depth coverage/CNV  
     -1.1 for each species get a bed file containing the chromosome, start bp and end bp for each single copy busco and each focal gene  
     -1.2 for each species map WGS data to the corresponding assembly  
     -1.3 calculate mean coverage across genome in sliding windows so we can extract mean coverage across single copy buscos and then each focal gene  
