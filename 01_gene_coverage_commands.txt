@@ -2,17 +2,25 @@
 
 #software required: bwa, samtools, mosdepth (installation: https://github.com/brentp/mosdepth)
 
-################
-# 1. Get sequences of genes of interest
-################
-# get genes in fasta format with the name in the header and then the sequence
-
-#if you have gene-specific sequences you can just cat them together
+#Gene depth coverage/CNV -
+#-1.1 for each species get a bed file containing the chromosome, start bp and end bp for each single copy busco and each focal gene
+#-1.2 for each species map WGS data to the corresponding assembly
+#-1.3 calculate mean coverage across genome in sliding windows so we can extract mean coverage across single copy buscos and then each focal gene
 
 ################
-# 2. map reads
+# 1.1 extract regions of interest for each species
 ################
-# map raw reads from each individual to the fasta file with genes listed
+#this will require you to pull out the busco locations for each assembly so you have a file that looks something like:
+
+Busco_or_gene_name  CHROM START END
+Busco_1 chr1  100 400
+Gene_2 chr4 1010  2500
+
+
+################
+# 1.2 map reads
+################
+# map raw reads from each individual to your assembly for that species
 
 #first index genome if needed
 bwa index /file/path/to/your_genome.fa
@@ -27,7 +35,7 @@ bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1_read1.fq.gz
 #filter out secondary alignments
 
 ################
-# 3. Calculate coverage
+# 1.3 Calculate coverage
 ################
 # take the bam files that result from this mapping and run mosdepth on them which will give coverage of each gene for each individual
 # I would start with all together and scroll through the .html file you will get and then you can specify/extract data for each region separately
@@ -55,3 +63,6 @@ python ../mosdepth/scripts/plot-dist.py ../*global.dist.txt
 
 #there should now be lists of .summary* files which should have information about coverage across each scaffold/in our case gene - you can plot these
 #to start I would plot a box plot showing the coverage for each gene grouping individuals by ecomorph - you could also do a scatterplot and colour sister species with different ecomorphs, where we expect a transition, the same colour-code
+
+#now you can extract coverage across all buscos and across your genes of interest and plot them
+#let me know if I can help with a script for this
