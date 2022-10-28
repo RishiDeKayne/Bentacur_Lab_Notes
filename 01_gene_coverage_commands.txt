@@ -32,7 +32,7 @@ bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1.fq.gz > /fi
 # paired-end mapping, general command structure, adjust to your case
 bwa mem /file/path/to/your_genome.fa /file/path/to/your_reads_indiv1_read1.fq.gz /file/path/to/your_reads_indiv1_read2.fq.gz > /file/path/to/indiv1.sam
 
-#filter out secondary alignments
+#filter out secondary alignments and covert sam to bam
 
 ################
 # 1.3 Calculate coverage
