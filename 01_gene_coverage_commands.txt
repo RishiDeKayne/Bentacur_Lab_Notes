@@ -49,7 +49,7 @@ ls *.bam > bam.list
 touch mosdepth_run.txt
 cat bam.list | while read bam
 do
-echo "mosdepth -n ${bam} /path/to/your/${bam} && touch /path/to/working/directory/done_files/${bam}.done" >> mosdepth_run.txt
+echo "mosdepth ${bam} /path/to/your/${bam} && touch /path/to/working/directory/done_files/${bam}.done" >> mosdepth_run.txt
 done
 
 #use parallel to run this list of commands - you may need to change this command according to your HPC architecture
