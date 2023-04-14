@@ -70,6 +70,7 @@ cp your_genome.fa .
 awk '{f="file" NR; print $0 > f}' RS='FamDB' repmask.tbl
 
 #outputs file1 --> file62
+rm file62 
 
 ls file* > file.list
 
