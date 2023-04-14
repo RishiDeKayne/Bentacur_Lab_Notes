@@ -89,19 +89,16 @@ touch Low_complexity.txt
 cat file.list | while read line
 do
 grep "file name" ${line} >> spp_name.txt
-grep "SINEs" ${line} | cut -f5 >> SINEs.txt
-grep "LINEs" ${line} | cut -f5 >> LINEs.txt
-grep "LTR elements" ${line} | cut -f5 >> LTR_elements.txt
-grep "DNA transposons" ${line} | cut -f5 >> DNA_transposons.txt
-grep "Rolling-circles" ${line} | cut -f5 >> Rolling-circles.txt
-grep "Unclassified" ${line} | cut -f5 >> Unclassified.txt
-grep "Small RNA" ${line} | cut -f5 >> Small_RNA.txt
-grep "Satellites" ${line} | cut -f5 >> Satellites.txt
-grep "Simple repeats" ${line} | cut -f5 >> Simple_repeats.txt
-grep "Low complexity" ${line} | cut -f5 >> Low_complexity.txt
+grep "SINEs" ${line} >> SINEs.txt
+grep "LINEs" ${line} >> LINEs.txt
+grep "LTR elements" ${line} >> LTR_elements.txt
+grep "DNA transposons" ${line} >> DNA_transposons.txt
+grep "Rolling-circles" ${line} >> Rolling-circles.txt
+grep "Unclassified" ${line} >> Unclassified.txt
+grep "Small RNA" ${line} >> Small_RNA.txt
+grep "Satellites" ${line} >> Satellites.txt
+grep "Simple repeats" ${line} >> Simple_repeats.txt
+grep "Low complexity" ${line} >> Low_complexity.txt
 done
-
-grep "SINEs" file1 | cut -f2 -d'p' 
-
 
 
