@@ -1,4 +1,4 @@
-# Bentacur_Lab_Notes
+# Betancur_Lab_Notes
 
 1. Gene depth coverage/CNV  
     -1.1 for each species get a bed file containing the chromosome, start bp and end bp for each single copy busco and each focal gene  
