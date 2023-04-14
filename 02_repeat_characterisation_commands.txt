@@ -63,3 +63,44 @@ cp your_genome.fa .
 #if you write a script to mask each of your references you can then extract the information for each family/group of TEs from each individual with grep
 #let me know if you need help with this
 
+################
+# 3. split repmask.tbl and output in format for phylanova
+################
+
+awk '{f="file" NR; print $0 > f}' RS='FamDB' repmask.tbl
+
+#outputs file1 --> file62
+
+ls file* > file.list
+
+touch spp_name.txt
+touch SINEs.txt
+touch LINEs.txt
+touch LTR_elements.txt
+touch DNA_transposons.txt
+touch Rolling-circles.txt
+touch Unclassified.txt
+touch Small_RNA.txt
+touch Satellites.txt
+touch Simple_repeats.txt
+touch Low_complexity.txt
+
+cat file.list | while read line
+do
+grep "file name" ${line} >> spp_name.txt
+grep "SINEs" ${line} | cut -f5 >> SINEs.txt
+grep "LINEs" ${line} | cut -f5 >> LINEs.txt
+grep "LTR elements" ${line} | cut -f5 >> LTR_elements.txt
+grep "DNA transposons" ${line} | cut -f5 >> DNA_transposons.txt
+grep "Rolling-circles" ${line} | cut -f5 >> Rolling-circles.txt
+grep "Unclassified" ${line} | cut -f5 >> Unclassified.txt
+grep "Small RNA" ${line} | cut -f5 >> Small_RNA.txt
+grep "Satellites" ${line} | cut -f5 >> Satellites.txt
+grep "Simple repeats" ${line} | cut -f5 >> Simple_repeats.txt
+grep "Low complexity" ${line} | cut -f5 >> Low_complexity.txt
+done
+
+grep "SINEs" file1 | cut -f2 -d'p' 
+
+
+
